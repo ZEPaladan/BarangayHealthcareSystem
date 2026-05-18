@@ -16,7 +16,7 @@ namespace BarangayHealthcareSystem
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ConsultationForm());
+            Application.Run(new LoginForm());
         }
     }
 }

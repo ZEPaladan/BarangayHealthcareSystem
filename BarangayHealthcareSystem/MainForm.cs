@@ -67,5 +67,20 @@ namespace BarangayHealthcareSystem
         {
             ShowForm(new PatientRegistrationForm());
         }
+
+        private void newConsultationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowForm(new ConsultationForm());
+        }
+
+        private void inventoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowForm(new InventoryForm());
+        }
+
+        private void generateReportsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowForm(new ReportsForm());
+        }
     }
 }
