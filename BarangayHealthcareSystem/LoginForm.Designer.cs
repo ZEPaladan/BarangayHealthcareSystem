@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -66,11 +67,12 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Montserrat SemiBold", 17.81443F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 26);
+            this.label3.Location = new System.Drawing.Point(38, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(376, 33);
+            this.label3.Size = new System.Drawing.Size(332, 66);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Barangay Healthcare System";
+            this.label3.Text = "BARANGAY HEALTHCARE\r\nSYSTEM";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textbox_username
             // 
@@ -113,13 +115,14 @@
             // checkbox_showpassword
             // 
             this.checkbox_showpassword.AutoSize = true;
+            this.checkbox_showpassword.BackColor = System.Drawing.Color.Transparent;
             this.checkbox_showpassword.Font = new System.Drawing.Font("Montserrat SemiBold", 8.164948F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkbox_showpassword.Location = new System.Drawing.Point(271, 143);
             this.checkbox_showpassword.Name = "checkbox_showpassword";
             this.checkbox_showpassword.Size = new System.Drawing.Size(118, 19);
             this.checkbox_showpassword.TabIndex = 7;
             this.checkbox_showpassword.Text = "Show Password";
-            this.checkbox_showpassword.UseVisualStyleBackColor = true;
+            this.checkbox_showpassword.UseVisualStyleBackColor = false;
             this.checkbox_showpassword.CheckedChanged += new System.EventHandler(this.checkbox_showpassword_CheckedChanged);
             // 
             // LoginForm
@@ -127,6 +130,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BackgroundImage = global::BarangayHealthcareSystem.Properties.Resources.Minimal_modern_healthcare_background__soft_202605222224;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(401, 253);
             this.Controls.Add(this.checkbox_showpassword);
             this.Controls.Add(this.button_clear);
@@ -136,6 +141,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BHSLoginForm";

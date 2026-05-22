@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -24,37 +24,22 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Patients", conn);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(
+                        "SELECT * FROM Patients", conn);
+
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
                     dgvPatients.DataSource = dt;
                 }
             }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show(
-                    "Database error while loading patients.\n\n" +
-                    "Error Message: " + sqlEx.Message + "\n" +
-                    "Error Number: " + sqlEx.Number,
-                    "SQL Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Unexpected error while loading patients.\n\n" +
-                    "Error Message: " + ex.Message,
-                    "System Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Error loading patients:\n" + ex.Message);
             }
         }
         private void ClearFields()
@@ -122,11 +107,11 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(
                         "SELECT * FROM Patients WHERE FirstName LIKE @search OR LastName LIKE @search", conn);
 
                     da.SelectCommand.Parameters.AddWithValue("@search", "%" + txtSearch.Text + "%");
@@ -137,25 +122,9 @@ namespace BarangayHealthcareSystem
                     dgvPatients.DataSource = dt;
                 }
             }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show(
-                    "Database error while searching patient.\n\n" +
-                    sqlEx.Message,
-                    "SQL Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Unexpected error while searching patient.\n\n" +
-                    ex.Message,
-                    "System Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Search error:\n" + ex.Message);
             }
         }
 
@@ -163,15 +132,25 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(
-                        "UPDATE Patients SET FirstName=@FirstName, MiddleName=@MiddleName, LastName=@LastName, Age=@Age, Gender=@Gender, Birthdate=@Birthdate, Address=@Address, ContactNo=@ContactNo " +
-                        "WHERE PatientID=@PatientID", conn);
+                    SQLiteCommand cmd = new SQLiteCommand(
+                        @"UPDATE Patients SET 
+                        FirstName=@FirstName,
+                        MiddleName=@MiddleName,
+                        LastName=@LastName,
+                        Age=@Age,
+                        Gender=@Gender,
+                        Birthdate=@Birthdate,
+                        Address=@Address,
+                        ContactNo=@ContactNo
+                        WHERE PatientID=@PatientID", conn);
 
-                    cmd.Parameters.AddWithValue("@PatientID", dgvPatients.CurrentRow.Cells["PatientID"].Value);
+                    cmd.Parameters.AddWithValue("@PatientID",
+                        dgvPatients.CurrentRow.Cells["PatientID"].Value);
+
                     cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
                     cmd.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
                     cmd.Parameters.AddWithValue("@LastName", txtLastName.Text);
@@ -181,46 +160,17 @@ namespace BarangayHealthcareSystem
                     cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
                     cmd.Parameters.AddWithValue("@ContactNo", txtContactNo.Text);
 
-                    int rows = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
-                    if (rows > 0)
-                    {
-                        MessageBox.Show("Patient updated successfully!", "Success",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    MessageBox.Show("Patient updated!");
 
                     LoadPatients();
                     ClearFields();
                 }
             }
-            catch (NullReferenceException)
-            {
-                MessageBox.Show(
-                    "Please select a patient record to update.",
-                    "Validation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-            }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show(
-                    "Database error while updating patient.\n\n" +
-                    sqlEx.Message,
-                    "SQL Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Unexpected error while updating patient.\n\n" +
-                    ex.Message,
-                    "System Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Update error:\n" + ex.Message);
             }
         }
 
@@ -228,13 +178,15 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(
-                        "INSERT INTO Patients (FirstName, MiddleName, LastName, Age, Gender, Birthdate, Address, ContactNo) " +
-                        "VALUES (@FirstName, @MiddleName, @LastName, @Age, @Gender, @Birthdate, @Address, @ContactNo)", conn);
+                    SQLiteCommand cmd = new SQLiteCommand(
+                        @"INSERT INTO Patients 
+                        (FirstName, MiddleName, LastName, Age, Gender, Birthdate, Address, ContactNo)
+                        VALUES
+                        (@FirstName, @MiddleName, @LastName, @Age, @Gender, @Birthdate, @Address, @ContactNo)", conn);
 
                     cmd.Parameters.AddWithValue("@FirstName", txtFirstName.Text);
                     cmd.Parameters.AddWithValue("@MiddleName", txtMiddleName.Text);
@@ -245,37 +197,17 @@ namespace BarangayHealthcareSystem
                     cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
                     cmd.Parameters.AddWithValue("@ContactNo", txtContactNo.Text);
 
-                    int rows = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
-                    if (rows > 0)
-                    {
-                        MessageBox.Show("Patient successfully added!", "Success",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    MessageBox.Show("Patient successfully added!");
 
                     LoadPatients();
                     ClearFields();
                 }
             }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show(
-                    "Failed to save patient data to database.\n\n" +
-                    "SQL Error: " + sqlEx.Message,
-                    "Database Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Unexpected system error while saving patient.\n\n" +
-                    "Error: " + ex.Message,
-                    "System Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Save error:\n" + ex.Message);
             }
         }
 
@@ -283,55 +215,27 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(
+                    SQLiteCommand cmd = new SQLiteCommand(
                         "DELETE FROM Patients WHERE PatientID=@PatientID", conn);
 
-                    cmd.Parameters.AddWithValue("@PatientID", dgvPatients.CurrentRow.Cells["PatientID"].Value);
+                    cmd.Parameters.AddWithValue("@PatientID",
+                        dgvPatients.CurrentRow.Cells["PatientID"].Value);
 
-                    int rows = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
-                    if (rows > 0)
-                    {
-                        MessageBox.Show("Patient deleted successfully!", "Success",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    MessageBox.Show("Patient deleted!");
 
                     LoadPatients();
                     ClearFields();
                 }
             }
-            catch (NullReferenceException)
-            {
-                MessageBox.Show(
-                    "Please select a patient record to delete.",
-                    "Validation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-            }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show(
-                    "Database error while deleting patient.\n\n" +
-                    sqlEx.Message,
-                    "SQL Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Unexpected system error while deleting patient.\n\n" +
-                    ex.Message,
-                    "System Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Delete error:\n" + ex.Message);
             }
         }
 

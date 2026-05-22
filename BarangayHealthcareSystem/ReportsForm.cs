@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
@@ -171,17 +171,17 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Patients", conn);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(
+                        "SELECT * FROM Patients", conn);
+
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
                     dgvReports.DataSource = dt;
-
-                    MessageBox.Show("Patient report loaded.");
                 }
             }
             catch (Exception ex)
@@ -194,14 +194,14 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(@"
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(@"
                         SELECT 
                             c.ConsultationID,
-                            p.FirstName + ' ' + p.LastName AS PatientName,
+                            p.FirstName || ' ' || p.LastName AS PatientName,
                             c.ConsultationDate,
                             c.Diagnosis,
                             c.Prescription,
@@ -213,8 +213,6 @@ namespace BarangayHealthcareSystem
                     da.Fill(dt);
 
                     dgvReports.DataSource = dt;
-
-                    MessageBox.Show("Consultation report loaded.");
                 }
             }
             catch (Exception ex)
@@ -227,19 +225,17 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Medicines", conn);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(
+                        "SELECT * FROM Medicines", conn);
+
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
                     dgvReports.DataSource = dt;
-
-                    HighlightLowStock();
-
-                    MessageBox.Show("Medicine report loaded.");
                 }
             }
             catch (Exception ex)
@@ -265,8 +261,7 @@ namespace BarangayHealthcareSystem
                 }
 
                 DataTable dt = (DataTable)dgvReports.DataSource;
-
-                string search = txtSearch.Text.Trim().Replace("'", "''");
+                string search = txtSearch.Text.Trim();
 
                 if (string.IsNullOrEmpty(search))
                 {
@@ -274,13 +269,13 @@ namespace BarangayHealthcareSystem
                     return;
                 }
 
-                // SAFE: generic search using only existing columns dynamically
+                search = search.Replace("'", "''");
+
                 string filter = "";
 
                 foreach (DataColumn col in dt.Columns)
                 {
                     if (filter != "") filter += " OR ";
-
                     filter += $"Convert([{col.ColumnName}], 'System.String') LIKE '%{search}%'";
                 }
 
@@ -288,7 +283,7 @@ namespace BarangayHealthcareSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Search error:\n\n" + ex.Message);
+                MessageBox.Show("Search error:\n" + ex.Message);
             }
         }
 

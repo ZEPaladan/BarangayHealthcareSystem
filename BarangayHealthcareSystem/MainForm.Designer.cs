@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.patientsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,6 +38,9 @@
             this.inventoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateReportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calendarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.userAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,6 +55,9 @@
             this.consultationToolStripMenuItem,
             this.medicinesToolStripMenuItem,
             this.reportsToolStripMenuItem,
+            this.calendarToolStripMenuItem,
+            this.userAccountsToolStripMenuItem,
+            this.dashboardToolStripMenuItem,
             this.logoutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -100,7 +107,7 @@
             // inventoryToolStripMenuItem
             // 
             this.inventoryToolStripMenuItem.Name = "inventoryToolStripMenuItem";
-            this.inventoryToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.inventoryToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.inventoryToolStripMenuItem.Text = "Inventory";
             this.inventoryToolStripMenuItem.Click += new System.EventHandler(this.inventoryToolStripMenuItem_Click);
             // 
@@ -118,6 +125,27 @@
             this.generateReportsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.generateReportsToolStripMenuItem.Text = "Generate Reports";
             this.generateReportsToolStripMenuItem.Click += new System.EventHandler(this.generateReportsToolStripMenuItem_Click);
+            // 
+            // calendarToolStripMenuItem
+            // 
+            this.calendarToolStripMenuItem.Name = "calendarToolStripMenuItem";
+            this.calendarToolStripMenuItem.Size = new System.Drawing.Size(80, 22);
+            this.calendarToolStripMenuItem.Text = "Calendar";
+            this.calendarToolStripMenuItem.Click += new System.EventHandler(this.calendarToolStripMenuItem_Click);
+            // 
+            // userAccountsToolStripMenuItem
+            // 
+            this.userAccountsToolStripMenuItem.Name = "userAccountsToolStripMenuItem";
+            this.userAccountsToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.userAccountsToolStripMenuItem.Text = "User Accounts";
+            this.userAccountsToolStripMenuItem.Click += new System.EventHandler(this.userAccountsToolStripMenuItem_Click);
+            // 
+            // dashboardToolStripMenuItem
+            // 
+            this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
+            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.dashboardToolStripMenuItem.Text = "Back to Home";
+            this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
@@ -147,8 +175,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::BarangayHealthcareSystem.Properties.Resources.Minimal_modern_healthcare_background__soft_202605222224;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -176,5 +207,8 @@
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calendarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem userAccountsToolStripMenuItem;
     }
 }

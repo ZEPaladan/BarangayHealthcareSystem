@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DashboardForm));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dgvPatients = new System.Windows.Forms.DataGridView();
@@ -39,16 +40,20 @@
             this.label4 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.dgvMedicines = new System.Windows.Forms.DataGridView();
-            this.label_medicines = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.label_lowstock = new System.Windows.Forms.Label();
+            this.label_medicines = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.pnlTodayEvents = new System.Windows.Forms.Panel();
+            this.lstTodayEvents = new System.Windows.Forms.ListBox();
+            this.lblTodayEventsTitle = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPatients)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvConsultations)).BeginInit();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMedicines)).BeginInit();
+            this.pnlTodayEvents.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -56,11 +61,11 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Montserrat SemiBold", 16.3299F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(356, 9);
+            this.label1.Location = new System.Drawing.Point(319, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(496, 32);
+            this.label1.Size = new System.Drawing.Size(583, 32);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Barangay Healthcare System Dashboard";
+            this.label1.Text = "BARANGAY HEALTHCARE SYSTEM DASHBOARD";
             // 
             // panel1
             // 
@@ -71,7 +76,7 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Location = new System.Drawing.Point(10, 54);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(385, 333);
+            this.panel1.Size = new System.Drawing.Size(385, 550);
             this.panel1.TabIndex = 1;
             // 
             // dgvPatients
@@ -79,7 +84,7 @@
             this.dgvPatients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPatients.Location = new System.Drawing.Point(7, 54);
             this.dgvPatients.Name = "dgvPatients";
-            this.dgvPatients.Size = new System.Drawing.Size(375, 276);
+            this.dgvPatients.Size = new System.Drawing.Size(375, 491);
             this.dgvPatients.TabIndex = 7;
             // 
             // label_patients
@@ -113,7 +118,7 @@
             this.panel2.Controls.Add(this.label4);
             this.panel2.Location = new System.Drawing.Point(401, 54);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(385, 333);
+            this.panel2.Size = new System.Drawing.Size(385, 550);
             this.panel2.TabIndex = 2;
             // 
             // dgvConsultations
@@ -121,7 +126,7 @@
             this.dgvConsultations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvConsultations.Location = new System.Drawing.Point(4, 54);
             this.dgvConsultations.Name = "dgvConsultations";
-            this.dgvConsultations.Size = new System.Drawing.Size(378, 276);
+            this.dgvConsultations.Size = new System.Drawing.Size(378, 491);
             this.dgvConsultations.TabIndex = 8;
             // 
             // label_consultations
@@ -153,78 +158,113 @@
             this.panel4.BackColor = System.Drawing.Color.Transparent;
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.dgvMedicines);
+            this.panel4.Controls.Add(this.label_lowstock);
             this.panel4.Controls.Add(this.label_medicines);
+            this.panel4.Controls.Add(this.label6);
             this.panel4.Controls.Add(this.label5);
             this.panel4.Location = new System.Drawing.Point(792, 54);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(385, 333);
+            this.panel4.Size = new System.Drawing.Size(385, 550);
             this.panel4.TabIndex = 3;
             // 
             // dgvMedicines
             // 
             this.dgvMedicines.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMedicines.Location = new System.Drawing.Point(5, 53);
+            this.dgvMedicines.Location = new System.Drawing.Point(5, 54);
             this.dgvMedicines.Name = "dgvMedicines";
-            this.dgvMedicines.Size = new System.Drawing.Size(375, 276);
+            this.dgvMedicines.Size = new System.Drawing.Size(375, 491);
             this.dgvMedicines.TabIndex = 8;
             this.dgvMedicines.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMedicines_CellFormatting);
-            // 
-            // label_medicines
-            // 
-            this.label_medicines.AutoSize = true;
-            this.label_medicines.BackColor = System.Drawing.Color.Transparent;
-            this.label_medicines.Font = new System.Drawing.Font("Montserrat SemiBold", 11.87629F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_medicines.Location = new System.Drawing.Point(218, 14);
-            this.label_medicines.Name = "label_medicines";
-            this.label_medicines.Size = new System.Drawing.Size(21, 24);
-            this.label_medicines.TabIndex = 10;
-            this.label_medicines.Text = "0";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Montserrat SemiBold", 11.87629F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(3, 14);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(152, 24);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Total Medicines:";
             // 
             // label_lowstock
             // 
             this.label_lowstock.AutoSize = true;
             this.label_lowstock.BackColor = System.Drawing.Color.Transparent;
             this.label_lowstock.Font = new System.Drawing.Font("Montserrat SemiBold", 11.87629F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_lowstock.Location = new System.Drawing.Point(1008, 390);
+            this.label_lowstock.Location = new System.Drawing.Point(218, 24);
             this.label_lowstock.Name = "label_lowstock";
             this.label_lowstock.Size = new System.Drawing.Size(21, 24);
             this.label_lowstock.TabIndex = 12;
             this.label_lowstock.Text = "0";
+            // 
+            // label_medicines
+            // 
+            this.label_medicines.AutoSize = true;
+            this.label_medicines.BackColor = System.Drawing.Color.Transparent;
+            this.label_medicines.Font = new System.Drawing.Font("Montserrat SemiBold", 11.87629F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_medicines.Location = new System.Drawing.Point(218, 0);
+            this.label_medicines.Name = "label_medicines";
+            this.label_medicines.Size = new System.Drawing.Size(21, 24);
+            this.label_medicines.TabIndex = 10;
+            this.label_medicines.Text = "0";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Montserrat SemiBold", 11.87629F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(793, 390);
+            this.label6.Location = new System.Drawing.Point(3, 24);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(202, 24);
             this.label6.TabIndex = 11;
             this.label6.Text = "Low Stock Medicines:";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Montserrat SemiBold", 11.87629F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(3, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(152, 24);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Total Medicines:";
+            // 
+            // pnlTodayEvents
+            // 
+            this.pnlTodayEvents.BackColor = System.Drawing.Color.Transparent;
+            this.pnlTodayEvents.Controls.Add(this.lstTodayEvents);
+            this.pnlTodayEvents.Controls.Add(this.lblTodayEventsTitle);
+            this.pnlTodayEvents.Location = new System.Drawing.Point(1183, 54);
+            this.pnlTodayEvents.Name = "pnlTodayEvents";
+            this.pnlTodayEvents.Size = new System.Drawing.Size(240, 330);
+            this.pnlTodayEvents.TabIndex = 13;
+            this.pnlTodayEvents.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlTodayEvents_Paint);
+            // 
+            // lstTodayEvents
+            // 
+            this.lstTodayEvents.FormattingEnabled = true;
+            this.lstTodayEvents.Location = new System.Drawing.Point(13, 53);
+            this.lstTodayEvents.Name = "lstTodayEvents";
+            this.lstTodayEvents.Size = new System.Drawing.Size(212, 264);
+            this.lstTodayEvents.TabIndex = 12;
+            // 
+            // lblTodayEventsTitle
+            // 
+            this.lblTodayEventsTitle.AutoSize = true;
+            this.lblTodayEventsTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblTodayEventsTitle.Font = new System.Drawing.Font("Montserrat SemiBold", 11.87629F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTodayEventsTitle.Location = new System.Drawing.Point(43, 15);
+            this.lblTodayEventsTitle.Name = "lblTodayEventsTitle";
+            this.lblTodayEventsTitle.Size = new System.Drawing.Size(140, 24);
+            this.lblTodayEventsTitle.TabIndex = 11;
+            this.lblTodayEventsTitle.Text = "Today\'s Events";
+            // 
             // DashboardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1184, 434);
-            this.Controls.Add(this.label_lowstock);
-            this.Controls.Add(this.label6);
+            this.BackgroundImage = global::BarangayHealthcareSystem.Properties.Resources.Minimal_modern_healthcare_background__soft_202605222224;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1545, 622);
+            this.Controls.Add(this.pnlTodayEvents);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DashboardForm";
             this.Text = "DashboardForm";
             this.Load += new System.EventHandler(this.DashboardForm_Load);
@@ -237,6 +277,8 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMedicines)).EndInit();
+            this.pnlTodayEvents.ResumeLayout(false);
+            this.pnlTodayEvents.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -259,5 +301,8 @@
         private System.Windows.Forms.DataGridView dgvPatients;
         private System.Windows.Forms.DataGridView dgvConsultations;
         private System.Windows.Forms.DataGridView dgvMedicines;
+        private System.Windows.Forms.Panel pnlTodayEvents;
+        private System.Windows.Forms.ListBox lstTodayEvents;
+        private System.Windows.Forms.Label lblTodayEventsTitle;
     }
 }

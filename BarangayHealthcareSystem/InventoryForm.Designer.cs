@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InventoryForm));
             this.label1 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -57,11 +58,11 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Montserrat SemiBold", 16.3299F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(333, 9);
+            this.label1.Location = new System.Drawing.Point(353, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(243, 32);
+            this.label1.Size = new System.Drawing.Size(283, 32);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Medicine Inventory";
+            this.label1.Text = "MEDICINE INVENTORY";
             // 
             // label8
             // 
@@ -256,7 +257,7 @@
             this.dgvMedicines.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMedicines.Location = new System.Drawing.Point(454, 53);
             this.dgvMedicines.Name = "dgvMedicines";
-            this.dgvMedicines.Size = new System.Drawing.Size(451, 354);
+            this.dgvMedicines.Size = new System.Drawing.Size(582, 353);
             this.dgvMedicines.TabIndex = 33;
             this.dgvMedicines.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMedicines_CellClick);
             this.dgvMedicines.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMedicines_CellFormatting);
@@ -265,7 +266,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(924, 440);
+            this.AutoScroll = true;
+            this.BackgroundImage = global::BarangayHealthcareSystem.Properties.Resources.Minimal_modern_healthcare_background__soft_202605222224;
+            this.ClientSize = new System.Drawing.Size(1071, 440);
             this.Controls.Add(this.dgvMedicines);
             this.Controls.Add(this.dtpExpirationDate);
             this.Controls.Add(this.btnClear);
@@ -287,6 +290,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InventoryForm";
             this.Text = "InventoryForm";
             this.Load += new System.EventHandler(this.InventoryForm_Load);

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportsForm));
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -57,12 +58,13 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label1.Font = new System.Drawing.Font("Montserrat SemiBold", 16.3299F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(358, 9);
+            this.label1.Location = new System.Drawing.Point(326, 35);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(223, 32);
+            this.label1.Size = new System.Drawing.Size(262, 32);
             this.label1.TabIndex = 12;
-            this.label1.Text = "Generate Reports";
+            this.label1.Text = "GENERATE REPORTS";
             // 
             // txtSearch
             // 
@@ -163,6 +165,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.BackgroundImage = global::BarangayHealthcareSystem.Properties.Resources.Minimal_modern_healthcare_background__soft_202605222224;
             this.ClientSize = new System.Drawing.Size(926, 606);
             this.Controls.Add(this.btnExportPDF);
             this.Controls.Add(this.btnRefresh);
@@ -175,6 +179,7 @@
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label8);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ReportsForm";
             this.Text = "ReportsForm";
             this.Load += new System.EventHandler(this.ReportsForm_Load);

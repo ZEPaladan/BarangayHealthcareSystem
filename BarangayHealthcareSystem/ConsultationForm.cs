@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -39,13 +39,17 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(
-                        "SELECT PatientID, FirstName + ' ' + LastName AS FullName FROM Patients", conn);
+                    string query = @"
+                        SELECT 
+                            PatientID,
+                            FirstName || ' ' || LastName AS FullName
+                        FROM Patients";
 
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
@@ -54,7 +58,7 @@ namespace BarangayHealthcareSystem
                     cmbPatient.ValueMember = "PatientID";
                 }
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error loading patients:\n" + ex.Message);
             }
@@ -65,29 +69,31 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(@"
+                    string query = @"
                         SELECT 
                             c.ConsultationID,
-                            p.FirstName + ' ' + p.LastName AS PatientName,
+                            p.FirstName || ' ' || p.LastName AS PatientName,
                             c.ConsultationDate,
                             c.Symptoms,
                             c.Diagnosis,
                             c.Prescription,
                             c.DoctorName
                         FROM Consultations c
-                        INNER JOIN Patients p ON c.PatientID = p.PatientID", conn);
+                        INNER JOIN Patients p 
+                        ON c.PatientID = p.PatientID";
 
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
                     dgvConsultations.DataSource = dt;
                 }
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error loading consultations:\n" + ex.Message);
             }
@@ -97,18 +103,20 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(@"
+                    string query = @"
                         INSERT INTO Consultations 
                         (PatientID, ConsultationDate, Symptoms, Diagnosis, Prescription, DoctorName)
                         VALUES
-                        (@PatientID, @ConsultationDate, @Symptoms, @Diagnosis, @Prescription, @DoctorName)", conn);
+                        (@PatientID, @ConsultationDate, @Symptoms, @Diagnosis, @Prescription, @DoctorName)";
+
+                    SQLiteCommand cmd = new SQLiteCommand(query, conn);
 
                     cmd.Parameters.AddWithValue("@PatientID", cmbPatient.SelectedValue);
-                    cmd.Parameters.AddWithValue("@ConsultationDate", dtpConsultationDate.Value);
+                    cmd.Parameters.AddWithValue("@ConsultationDate", dtpConsultationDate.Value.ToString("yyyy-MM-dd"));
                     cmd.Parameters.AddWithValue("@Symptoms", txtSymptoms.Text);
                     cmd.Parameters.AddWithValue("@Diagnosis", txtDiagnosis.Text);
                     cmd.Parameters.AddWithValue("@Prescription", txtPrescription.Text);
@@ -117,21 +125,15 @@ namespace BarangayHealthcareSystem
                     int rows = cmd.ExecuteNonQuery();
 
                     if (rows > 0)
-                    {
                         MessageBox.Show("Consultation saved successfully!");
-                    }
 
                     LoadConsultations();
                     ClearFields();
                 }
             }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Database error while saving consultation:\n" + ex.Message);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show("Unexpected error:\n" + ex.Message);
+                MessageBox.Show("Error saving consultation:\n" + ex.Message);
             }
         }
 
@@ -139,14 +141,24 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                if (dgvConsultations.CurrentRow == null)
+                {
+                    MessageBox.Show("Please select a record first.");
+                    return;
+                }
+
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(
-                        "DELETE FROM Consultations WHERE ConsultationID=@id", conn);
+                    string query = "DELETE FROM Consultations WHERE ConsultationID=@id";
 
-                    cmd.Parameters.AddWithValue("@id", dgvConsultations.CurrentRow.Cells["ConsultationID"].Value);
+                    SQLiteCommand cmd = new SQLiteCommand(query, conn);
+
+                    cmd.Parameters.AddWithValue(
+                        "@id",
+                        dgvConsultations.CurrentRow.Cells["ConsultationID"].Value
+                    );
 
                     cmd.ExecuteNonQuery();
 
@@ -170,21 +182,28 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(@"
+                    string query = @"
                         SELECT 
                             c.ConsultationID,
-                            p.FirstName + ' ' + p.LastName AS PatientName,
+                            p.FirstName || ' ' || p.LastName AS PatientName,
                             c.ConsultationDate,
                             c.Diagnosis
                         FROM Consultations c
-                        INNER JOIN Patients p ON c.PatientID = p.PatientID
-                        WHERE p.FirstName LIKE @search OR p.LastName LIKE @search", conn);
+                        INNER JOIN Patients p 
+                        ON c.PatientID = p.PatientID
+                        WHERE p.FirstName LIKE @search 
+                           OR p.LastName LIKE @search";
 
-                    da.SelectCommand.Parameters.AddWithValue("@search", "%" + txtSearch.Text + "%");
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(query, conn);
+
+                    da.SelectCommand.Parameters.AddWithValue(
+                        "@search",
+                        "%" + txtSearch.Text + "%"
+                    );
 
                     DataTable dt = new DataTable();
                     da.Fill(dt);

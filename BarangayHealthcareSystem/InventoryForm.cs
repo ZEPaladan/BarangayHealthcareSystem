@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -23,12 +23,12 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(
-                        "SELECT * FROM Medicines", conn);
+                    SQLiteDataAdapter da =
+                        new SQLiteDataAdapter("SELECT * FROM Medicines", conn);
 
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -36,22 +36,11 @@ namespace BarangayHealthcareSystem
                     dgvMedicines.DataSource = dt;
                 }
             }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show(
-                    "Database error while loading medicines.\n\n" +
-                    sqlEx.Message,
-                    "SQL Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Unexpected error while loading medicines.\n\n" +
-                    ex.Message,
-                    "System Error",
+                    "Error loading medicines:\n\n" + ex.Message,
+                    "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -106,59 +95,32 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(
-                        "INSERT INTO Medicines " +
-                        "(MedicineName, Category, Quantity, Unit, ExpirationDate, Supplier) " +
-                        "VALUES " +
-                        "(@MedicineName, @Category, @Quantity, @Unit, @ExpirationDate, @Supplier)",
-                        conn);
+                    SQLiteCommand cmd = new SQLiteCommand(@"
+                        INSERT INTO Medicines 
+                        (MedicineName, Category, Quantity, Unit, ExpirationDate, Supplier)
+                        VALUES
+                        (@Name, @Cat, @Qty, @Unit, @Exp, @Sup)", conn);
 
-                    cmd.Parameters.AddWithValue("@MedicineName", txtMedicineName.Text);
-                    cmd.Parameters.AddWithValue("@Category", txtCategory.Text);
-                    cmd.Parameters.AddWithValue("@Quantity", txtQuantity.Text);
+                    cmd.Parameters.AddWithValue("@Name", txtMedicineName.Text);
+                    cmd.Parameters.AddWithValue("@Cat", txtCategory.Text);
+                    cmd.Parameters.AddWithValue("@Qty", txtQuantity.Text);
                     cmd.Parameters.AddWithValue("@Unit", txtUnit.Text);
-                    cmd.Parameters.AddWithValue("@ExpirationDate", dtpExpirationDate.Value);
-                    cmd.Parameters.AddWithValue("@Supplier", txtSupplier.Text);
+                    cmd.Parameters.AddWithValue("@Exp", dtpExpirationDate.Value);
+                    cmd.Parameters.AddWithValue("@Sup", txtSupplier.Text);
 
-                    int rows = cmd.ExecuteNonQuery();
-
-                    if (rows > 0)
-                    {
-                        MessageBox.Show(
-                            "Medicine added successfully!",
-                            "Success",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information
-                        );
-                    }
+                    cmd.ExecuteNonQuery();
 
                     LoadMedicines();
                     ClearFields();
                 }
             }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show(
-                    "Database error while saving medicine.\n\n" +
-                    sqlEx.Message,
-                    "SQL Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Unexpected error while saving medicine.\n\n" +
-                    ex.Message,
-                    "System Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Save error:\n" + ex.Message);
             }
         }
 
@@ -166,42 +128,31 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(
-                        "UPDATE Medicines SET " +
-                        "MedicineName=@MedicineName, " +
-                        "Category=@Category, " +
-                        "Quantity=@Quantity, " +
-                        "Unit=@Unit, " +
-                        "ExpirationDate=@ExpirationDate, " +
-                        "Supplier=@Supplier " +
-                        "WHERE MedicineID=@MedicineID",
-                        conn);
+                    SQLiteCommand cmd = new SQLiteCommand(@"
+                        UPDATE Medicines SET
+                        MedicineName=@Name,
+                        Category=@Cat,
+                        Quantity=@Qty,
+                        Unit=@Unit,
+                        ExpirationDate=@Exp,
+                        Supplier=@Sup
+                        WHERE MedicineID=@ID", conn);
 
-                    cmd.Parameters.AddWithValue("@MedicineID",
+                    cmd.Parameters.AddWithValue("@ID",
                         dgvMedicines.CurrentRow.Cells["MedicineID"].Value);
 
-                    cmd.Parameters.AddWithValue("@MedicineName", txtMedicineName.Text);
-                    cmd.Parameters.AddWithValue("@Category", txtCategory.Text);
-                    cmd.Parameters.AddWithValue("@Quantity", txtQuantity.Text);
+                    cmd.Parameters.AddWithValue("@Name", txtMedicineName.Text);
+                    cmd.Parameters.AddWithValue("@Cat", txtCategory.Text);
+                    cmd.Parameters.AddWithValue("@Qty", txtQuantity.Text);
                     cmd.Parameters.AddWithValue("@Unit", txtUnit.Text);
-                    cmd.Parameters.AddWithValue("@ExpirationDate", dtpExpirationDate.Value);
-                    cmd.Parameters.AddWithValue("@Supplier", txtSupplier.Text);
+                    cmd.Parameters.AddWithValue("@Exp", dtpExpirationDate.Value);
+                    cmd.Parameters.AddWithValue("@Sup", txtSupplier.Text);
 
-                    int rows = cmd.ExecuteNonQuery();
-
-                    if (rows > 0)
-                    {
-                        MessageBox.Show(
-                            "Medicine updated successfully!",
-                            "Success",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information
-                        );
-                    }
+                    cmd.ExecuteNonQuery();
 
                     LoadMedicines();
                     ClearFields();
@@ -209,13 +160,7 @@ namespace BarangayHealthcareSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Error updating medicine.\n\n" +
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Update error:\n" + ex.Message);
             }
         }
 
@@ -223,28 +168,17 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(
-                        "DELETE FROM Medicines WHERE MedicineID=@MedicineID",
-                        conn);
+                    SQLiteCommand cmd = new SQLiteCommand(
+                        "DELETE FROM Medicines WHERE MedicineID=@ID", conn);
 
-                    cmd.Parameters.AddWithValue("@MedicineID",
+                    cmd.Parameters.AddWithValue("@ID",
                         dgvMedicines.CurrentRow.Cells["MedicineID"].Value);
 
-                    int rows = cmd.ExecuteNonQuery();
-
-                    if (rows > 0)
-                    {
-                        MessageBox.Show(
-                            "Medicine deleted successfully!",
-                            "Success",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information
-                        );
-                    }
+                    cmd.ExecuteNonQuery();
 
                     LoadMedicines();
                     ClearFields();
@@ -252,13 +186,7 @@ namespace BarangayHealthcareSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Error deleting medicine.\n\n" +
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Delete error:\n" + ex.Message);
             }
         }
 
@@ -296,17 +224,16 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlDataAdapter da = new SqlDataAdapter(
-                        "SELECT * FROM Medicines WHERE MedicineName LIKE @search",
-                        conn);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(@"
+                        SELECT * FROM Medicines
+                        WHERE MedicineName LIKE @search", conn);
 
                     da.SelectCommand.Parameters.AddWithValue(
-                        "@search",
-                        "%" + txtSearch.Text + "%");
+                        "@search", "%" + txtSearch.Text + "%");
 
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -316,13 +243,7 @@ namespace BarangayHealthcareSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Search error.\n\n" +
-                    ex.Message,
-                    "Search Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Search error:\n" + ex.Message);
             }
         }
         // CLEAR FIELDS

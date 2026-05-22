@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PatientRegistrationForm));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,6 +54,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.dgvPatients = new System.Windows.Forms.DataGridView();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPatients)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,9 +65,9 @@
             this.label1.Font = new System.Drawing.Font("Montserrat SemiBold", 16.3299F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(300, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(325, 32);
+            this.label1.Size = new System.Drawing.Size(377, 32);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Patient Registration Form";
+            this.label1.Text = "PATIENT REGISTRATION FORM";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
@@ -305,18 +307,33 @@
             // dgvPatients
             // 
             this.dgvPatients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPatients.Location = new System.Drawing.Point(440, 53);
+            this.dgvPatients.Location = new System.Drawing.Point(435, 77);
             this.dgvPatients.Name = "dgvPatients";
-            this.dgvPatients.Size = new System.Drawing.Size(451, 354);
+            this.dgvPatients.Size = new System.Drawing.Size(582, 353);
             this.dgvPatients.TabIndex = 25;
             this.dgvPatients.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPatients_CellClick);
             this.dgvPatients.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPatients_CellContentClick);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.Font = new System.Drawing.Font("Montserrat SemiBold", 11.13402F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(440, 53);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(156, 21);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "PATIENT RECORDS";
             // 
             // PatientRegistrationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(903, 442);
+            this.AutoScroll = true;
+            this.BackgroundImage = global::BarangayHealthcareSystem.Properties.Resources.Minimal_modern_healthcare_background__soft_202605222224;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1038, 442);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.dgvPatients);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnDelete);
@@ -342,6 +359,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PatientRegistrationForm";
             this.Text = "PatientRegistrationForm";
             this.Load += new System.EventHandler(this.PatientRegistrationForm_Load);
@@ -378,5 +396,6 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.DataGridView dgvPatients;
+        private System.Windows.Forms.Label label11;
     }
 }

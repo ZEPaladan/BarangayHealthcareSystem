@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConsultationForm));
             this.label1 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -59,9 +60,9 @@
             this.label1.Font = new System.Drawing.Font("Montserrat SemiBold", 16.3299F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(366, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(240, 32);
+            this.label1.Size = new System.Drawing.Size(281, 32);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Consultation Form";
+            this.label1.Text = "CONSULTATION FORM";
             // 
             // label8
             // 
@@ -196,7 +197,7 @@
             this.dgvConsultations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvConsultations.Location = new System.Drawing.Point(519, 85);
             this.dgvConsultations.Name = "dgvConsultations";
-            this.dgvConsultations.Size = new System.Drawing.Size(411, 353);
+            this.dgvConsultations.Size = new System.Drawing.Size(582, 353);
             this.dgvConsultations.TabIndex = 25;
             // 
             // btnSearch
@@ -265,8 +266,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(942, 450);
+            this.AutoScroll = true;
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackgroundImage = global::BarangayHealthcareSystem.Properties.Resources.Minimal_modern_healthcare_background__soft_202605222224;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1113, 450);
             this.Controls.Add(this.cmbPatient);
             this.Controls.Add(this.dtpConsultationDate);
             this.Controls.Add(this.btnSave);
@@ -288,6 +292,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ConsultationForm";
             this.Text = "ConsultationForm";
             this.Load += new System.EventHandler(this.ConsultationForm_Load);

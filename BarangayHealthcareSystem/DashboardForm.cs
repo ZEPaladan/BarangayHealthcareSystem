@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -23,20 +23,20 @@ namespace BarangayHealthcareSystem
         {
             try
             {
-                using (SqlConnection conn = db.GetConnection())
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    SqlCommand cmd1 = new SqlCommand("SELECT COUNT(*) FROM Patients", conn);
+                    SQLiteCommand cmd1 = new SQLiteCommand("SELECT COUNT(*) FROM Patients", conn);
                     label_patients.Text = cmd1.ExecuteScalar().ToString();
 
-                    SqlCommand cmd2 = new SqlCommand("SELECT COUNT(*) FROM Consultations", conn);
+                    SQLiteCommand cmd2 = new SQLiteCommand("SELECT COUNT(*) FROM Consultations", conn);
                     label_consultations.Text = cmd2.ExecuteScalar().ToString();
 
-                    SqlCommand cmd3 = new SqlCommand("SELECT COUNT(*) FROM Medicines", conn);
+                    SQLiteCommand cmd3 = new SQLiteCommand("SELECT COUNT(*) FROM Medicines", conn);
                     label_medicines.Text = cmd3.ExecuteScalar().ToString();
 
-                    SqlCommand cmd4 = new SqlCommand("SELECT COUNT(*) FROM Medicines WHERE Quantity <= 10", conn);
+                    SQLiteCommand cmd4 = new SQLiteCommand("SELECT COUNT(*) FROM Medicines WHERE Quantity <= 10", conn);
                     label_lowstock.Text = cmd4.ExecuteScalar().ToString();
                 }
             }
@@ -47,50 +47,71 @@ namespace BarangayHealthcareSystem
         }
         private void LoadPatients()
         {
-            using (SqlConnection conn = db.GetConnection())
+            try
             {
-                conn.Open();
+                using (SQLiteConnection conn = db.GetConnection())
+                {
+                    conn.Open();
 
-                SqlDataAdapter da = new SqlDataAdapter(
-                    "SELECT PatientID, FirstName, LastName, Age, Gender, ContactNo FROM Patients",
-                    conn);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(
+                        "SELECT PatientID, FirstName, LastName, Age, Gender, ContactNo FROM Patients",
+                        conn);
 
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
 
-                dgvPatients.DataSource = dt;
+                    dgvPatients.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading patients: " + ex.Message);
             }
         }
         private void LoadConsultations()
         {
-            using (SqlConnection conn = db.GetConnection())
+            try
             {
-                conn.Open();
+                using (SQLiteConnection conn = db.GetConnection())
+                {
+                    conn.Open();
 
-                SqlDataAdapter da = new SqlDataAdapter(
-                    "SELECT ConsultationID, PatientID, ConsultationDate, Diagnosis FROM Consultations",
-                    conn);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(
+                        "SELECT ConsultationID, PatientID, ConsultationDate, Diagnosis FROM Consultations",
+                        conn);
 
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
 
-                dgvConsultations.DataSource = dt;
+                    dgvConsultations.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading consultations: " + ex.Message);
             }
         }
         private void LoadMedicines()
         {
-            using (SqlConnection conn = db.GetConnection())
+            try
             {
-                conn.Open();
+                using (SQLiteConnection conn = db.GetConnection())
+                {
+                    conn.Open();
 
-                SqlDataAdapter da = new SqlDataAdapter(
-                    "SELECT MedicineID, MedicineName, Category, Quantity, ExpirationDate FROM Medicines",
-                    conn);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(
+                        "SELECT MedicineID, MedicineName, Category, Quantity, ExpirationDate FROM Medicines",
+                        conn);
 
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
 
-                dgvMedicines.DataSource = dt;
+                    dgvMedicines.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading medicines: " + ex.Message);
             }
         }
         private void StyleGrid(DataGridView dgv)
@@ -138,10 +159,58 @@ namespace BarangayHealthcareSystem
             LoadConsultations();
             LoadMedicines();
 
+            LoadTodayEvents();
+
             StyleGrid(dgvPatients);
             StyleGrid(dgvConsultations);
             StyleGrid(dgvMedicines);
 
+            lstTodayEvents.Font = new Font("Segoe UI", 10);
+            lstTodayEvents.BackColor = Color.White;
+            lstTodayEvents.ForeColor = Color.Black;
+            lstTodayEvents.BorderStyle = BorderStyle.FixedSingle;
+            lstTodayEvents.SelectionMode = SelectionMode.None;
+
+        }
+        private void LoadTodayEvents()
+        {
+            lstTodayEvents.Items.Clear();
+
+            string today = DateTime.Now.ToString("yyyy-MM-dd");
+
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"
+                    SELECT Title, Description 
+                    FROM CalendarEvents 
+                    WHERE EventDate = @date
+                    ORDER BY EventID DESC";
+
+                using (var cmd = new SQLiteCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@date", today);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string title = reader["Title"].ToString();
+                            string desc = reader["Description"].ToString();
+
+                            lstTodayEvents.Items.Add($"📌 {title}");
+                            lstTodayEvents.Items.Add($"   📝 {desc}");
+                            lstTodayEvents.Items.Add(""); // spacing
+                        }
+                    }
+                }
+            }
+
+            if (lstTodayEvents.Items.Count == 0)
+            {
+                lstTodayEvents.Items.Add("No events today.");
+            }
         }
 
         private void dgvMedicines_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -166,6 +235,11 @@ namespace BarangayHealthcareSystem
                     dgvMedicines.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.White;
                 }
             }
+        }
+
+        private void pnlTodayEvents_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

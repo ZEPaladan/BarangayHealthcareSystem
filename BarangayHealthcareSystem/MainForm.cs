@@ -20,11 +20,13 @@ namespace BarangayHealthcareSystem
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.IsMdiContainer = true;
+
+
             ShowForm(new DashboardForm());
         }
         private void ShowForm(Form form)
         {
-            // Prevent duplicate forms
+            // close only SAME TYPE form (prevents closing everything)
             foreach (Form child in this.MdiChildren)
             {
                 if (child.GetType() == form.GetType())
@@ -32,11 +34,12 @@ namespace BarangayHealthcareSystem
                     child.Activate();
                     return;
                 }
+
                 child.Close();
             }
 
             form.MdiParent = this;
-            form.Dock = DockStyle.Fill;
+            form.WindowState = FormWindowState.Maximized; // better than Dock.Fill
             form.Show();
         }
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -81,6 +84,22 @@ namespace BarangayHealthcareSystem
         private void generateReportsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowForm(new ReportsForm());
+        }
+
+        private void dashboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowForm(new DashboardForm());
+        }
+
+        private void calendarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowForm(new Calendar_Form());
+        }
+
+        private void userAccountsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UserAccessForm frm = new UserAccessForm();
+            frm.ShowDialog();
         }
     }
 }

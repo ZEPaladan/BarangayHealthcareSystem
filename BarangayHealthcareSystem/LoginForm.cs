@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -32,21 +32,26 @@ namespace BarangayHealthcareSystem
         {
             DatabaseConnection db = new DatabaseConnection();
 
-            using (SqlConnection conn = db.GetConnection())
+            try
             {
-                try
+                using (SQLiteConnection conn = db.GetConnection())
                 {
                     conn.Open();
 
-                    string query = "SELECT COUNT(*) FROM Users WHERE Username=@username AND Password=@password";
+                    string query = @"
+                SELECT COUNT(*) 
+                FROM Users 
+                WHERE Username=@username 
+                AND Password=@password";
 
-                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SQLiteCommand cmd = new SQLiteCommand(query, conn);
+
                     cmd.Parameters.AddWithValue("@username", textbox_username.Text);
                     cmd.Parameters.AddWithValue("@password", textbox_password.Text);
 
                     int count = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    if (count == 1)
+                    if (count > 0)
                     {
                         MessageBox.Show("Login Successful!");
 
@@ -60,10 +65,10 @@ namespace BarangayHealthcareSystem
                         MessageBox.Show("Invalid Username or Password!");
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Login error:\n" + ex.Message);
             }
         }
 
